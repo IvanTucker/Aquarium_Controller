@@ -3,22 +3,23 @@ title: "Aquarium Data Collector"
 author: "Ivan Tucker"
 date: "September 30, 2016"
 
-Copyright (C) 2016  Ivan Tucker
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-Contact me electronically at OnTheEdgeConsulting@gmail.com
+# Copyright (C) 2016  Ivan Tucker
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Contact me by email at OnTheEdgeConsulting@gmail.com
+############################################333
 
 #### Load Packages ####
 
@@ -49,6 +50,7 @@ src <- xpathSApply((doc.datalog), "//record");
 src_length<-length(src);
 probes = xpathSApply(r[[4]], ".//name", xmlChildren)
 probe.count<-length(probes)
+
 # Create dataframe
 foo<-xmlSApply(src[[1]], xmlValue)
 xml_datalog<-data.frame(t(foo), stringsAsFactors = FALSE)
@@ -139,7 +141,7 @@ new_dataset<- fill_(new_dataset, fill_cols = dataset_names)
 # if this is your first time through, run the line below. Otherwise leave it commented out.
 # dataset<- new_dataset 
 
-#### add to exist data ####
+#### add to existing data ####
 # merge dataframes 
 dataset <- merge(dataset, new_dataset, all=TRUE)
 
@@ -150,6 +152,10 @@ dataset<- dataset[ do.call(order, dataset),]
 anyDuplicated(dataset) # should be zero 
 dataset<- unique(dataset) # elimates duplicate
 
+# fill in missing values
+dataset_names<- colnames(dataset)
+dataset<- fill_(dataset, fill_cols = dataset_names)
+
 #### write to file ####
-file_name=paste(system_name),".csv", sep="" )
+file_name=paste(system_name,".csv", sep="" )
 write.csv(dataset, file= file_name)
